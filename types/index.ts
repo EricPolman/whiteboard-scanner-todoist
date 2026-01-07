@@ -30,15 +30,21 @@ export interface TodoistTask {
   assignee_id?: string;
 }
 
+export interface TodoistSection {
+  id: string;
+  project_id: string;
+  order: number;
+  name: string;
+}
+
 export interface ExtractedLine {
   id: string;
   text: string;
   selected: boolean;
   confidence?: number;
+  section?: string;
 }
 
 export interface OCRResult {
   lines: ExtractedLine[];
-  confidence: number;
-  processingTime: number;
 }

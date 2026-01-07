@@ -10,6 +10,7 @@ A Next.js web application that scans whiteboard images and automatically creates
 - ✅ Select which lines to convert into tasks
 - 🎯 Create tasks in any Todoist project
 - 🔐 Secure OAuth authentication with Todoist
+- 🛡️ Email whitelist access control via Vercel Edge Config
 
 ## Prerequisites
 
@@ -17,6 +18,7 @@ A Next.js web application that scans whiteboard images and automatically creates
 - A Todoist account
 - Todoist OAuth credentials (Client ID and Secret)
 - Google Gemini API key
+- Vercel Edge Config (for access control) - see [EDGE_CONFIG_SETUP.md](EDGE_CONFIG_SETUP.md)
 
 ## Setup Instructions
 

@@ -23,12 +23,48 @@ export async function POST(request: Request) {
 
     const client = new TodoistClient(session.accessToken);
 
-    // Add project_id to each task if provided
+    // Fetch sections to map section names to IDs
+    const hasSections = tasks.some(
+      (task: { section?: string }) => task.section
+    );
+    let sectionMap: Record<string, string> = {};
+
+    if (hasSections && projectId) {
+      try {
+        const sections = await client.getSections(projectId);
+        // Create exact name map (case-sensitive since Gemini uses exact names)
+        sectionMap = sections.reduce((map, section) => {
+          map[section.name] = section.id;
+          return map;
+        }, {} as Record<string, string>);
+      } catch (error) {
+        console.error("Error fetching sections:", error);
+      }
+    }
+
+    // Add project_id and section_id to each task
     const tasksWithProject = tasks.map(
-      (task: { content: string; project_id?: string }) => ({
-        ...task,
-        project_id: projectId || task.project_id,
-      })
+      (task: { content: string; project_id?: string; section?: string }) => {
+        const taskData: {
+          content: string;
+          project_id?: string;
+          section_id?: string;
+          section?: string;
+        } = {
+          ...task,
+          project_id: projectId || task.project_id,
+        };
+
+        // Map exact section name to section_id
+        if (task.section && sectionMap[task.section]) {
+          taskData.section_id = sectionMap[task.section];
+        }
+
+        // Remove the section field as it's not part of Todoist API
+        delete taskData.section;
+
+        return taskData;
+      }
     );
 
     const results = await client.createTasks(tasksWithProject);

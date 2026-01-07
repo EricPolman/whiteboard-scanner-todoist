@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Whiteboard Scanner - Scan whiteboards to Todoist",
   description: "Capture whiteboard images and automatically create tasks in Todoist",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
 };
 
 export default function RootLayout({

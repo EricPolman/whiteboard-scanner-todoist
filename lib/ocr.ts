@@ -2,15 +2,19 @@
 
 import { ExtractedLine } from "@/types";
 
-export async function processImageOCR(file: File): Promise<{
+export async function processImageOCR(
+  file: File,
+  projectId?: string
+): Promise<{
   lines: ExtractedLine[];
-  confidence: number;
-  processingTime: number;
 }> {
   try {
     // Send image to server-side API to keep API key secure
     const formData = new FormData();
     formData.append("image", file);
+    if (projectId) {
+      formData.append("projectId", projectId);
+    }
 
     const response = await fetch("/api/gemini", {
       method: "POST",

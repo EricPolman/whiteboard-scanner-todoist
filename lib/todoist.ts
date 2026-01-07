@@ -34,9 +34,18 @@ export class TodoistClient {
     return this.request<TodoistProject[]>("/projects");
   }
 
+  async getSections(
+    projectId: string
+  ): Promise<
+    Array<{ id: string; name: string; project_id: string; order: number }>
+  > {
+    return this.request(`/sections?project_id=${projectId}`);
+  }
+
   async createTask(task: {
     content: string;
     project_id?: string;
+    section_id?: string;
     description?: string;
     priority?: number;
     due_string?: string;
@@ -51,6 +60,7 @@ export class TodoistClient {
     tasks: Array<{
       content: string;
       project_id?: string;
+      section_id?: string;
       description?: string;
       priority?: number;
       due_string?: string;
@@ -73,5 +83,45 @@ export class TodoistClient {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
     return results;
+  }
+
+  async getUserInfo(): Promise<{ email: string; name: string }> {
+    // Get first project
+    const projects = await this.getProjects();
+    if (!projects || projects.length === 0) {
+      throw new Error("No projects found");
+    }
+
+    const firstProjectId = projects[0].id;
+
+    // Get collaborators from first project
+    const response = await fetch(
+      `${TODOIST_API_BASE}/projects/${firstProjectId}/collaborators`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to get collaborators: ${response.status}`);
+    }
+
+    const collaborators = await response.json();
+
+    // The first collaborator with is_owner or is_admin is typically the authenticated user
+    // Or we can just take the first one if it's a personal project
+    const currentUser = collaborators[0];
+
+    if (!currentUser?.email) {
+      throw new Error("Could not determine user email from collaborators");
+    }
+
+    return {
+      email: currentUser.email,
+      name: currentUser.name || currentUser.full_name || "Todoist User",
+    };
   }
 }
