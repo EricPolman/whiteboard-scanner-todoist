@@ -7,6 +7,7 @@ import TaskList from "@/components/TaskList";
 import ProjectSelector from "@/components/ProjectSelector";
 import { ExtractedLine } from "@/types";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { processImageOCR } from "@/lib/ocr";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -40,23 +41,11 @@ export default function Home() {
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append("image", file);
+      // Process OCR on the client side for better privacy and performance
+      const result = await processImageOCR(file);
+      setLines(result.lines);
 
-      const response = await fetch("/api/ocr", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to process image");
-      }
-
-      const data = await response.json();
-      setLines(data.lines);
-
-      if (data.lines.length === 0) {
+      if (result.lines.length === 0) {
         setError("No text detected in the image. Please try a clearer photo.");
       }
     } catch (err) {

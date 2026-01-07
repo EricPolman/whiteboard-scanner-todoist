@@ -5,7 +5,7 @@ A Next.js web application that scans whiteboard images and automatically creates
 ## Features
 
 - 📸 Upload or capture whiteboard photos
-- 🤖 Automatic text extraction using OCR (Tesseract.js)
+- 🤖 AI-powered text extraction using Google Gemini
 - ✏️ Edit and review extracted text before creating tasks
 - ✅ Select which lines to convert into tasks
 - 🎯 Create tasks in any Todoist project
@@ -16,6 +16,7 @@ A Next.js web application that scans whiteboard images and automatically creates
 - Node.js 18+ and npm
 - A Todoist account
 - Todoist OAuth credentials (Client ID and Secret)
+- Google Gemini API key
 
 ## Setup Instructions
 
@@ -34,14 +35,21 @@ npm install
    - **App name**: Whiteboard Scanner
    - **OAuth redirect URL**: `http://localhost:3000/api/auth/callback/todoist`
 4. Save the app and copy your **Client ID** and **Client Secret**
+Get Google Gemini API Key
 
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Click "Create API Key"
+3. Copy your API key
+
+### 4. 
 ### 3. Configure Environment Variables
 
 1. Copy the example environment file:
    ```bash
    cp .env.example .env.local
    ```
-
+GEMINI_API_KEY=your-gemini-api-key
+   
 2. Edit `.env.local` and add your credentials:
    ```env
    NEXTAUTH_URL=http://localhost:3000
@@ -49,7 +57,7 @@ npm install
    TODOIST_CLIENT_ID=your-todoist-client-id
    TODOIST_CLIENT_SECRET=your-todoist-client-secret
    ```
-
+5
 3. Generate a NextAuth secret:
    ```bash
    openssl rand -base64 32
@@ -101,7 +109,7 @@ whiteboard-scanner/
 ├── spec.md                       # Project specification
 └── todolist.md                   # Development checklist
 ```
-
+AI/Vision**: Google Gemini 1.5 Flash
 ## Technology Stack
 
 - **Framework**: Next.js 14+ (App Router)
@@ -110,10 +118,8 @@ whiteboard-scanner/
 - **Authentication**: NextAuth.js
 - **OCR**: Tesseract.js
 - **Icons**: Lucide React
-- **API**: Todoist REST API v2
-
-## API Endpoints
-
+- **Removed: `/api/ocr` 
+OCR processing now happens client-side using Google Gemini API for better privacy and accuracy
 ### `/api/auth/[...nextauth]`
 Handles Todoist OAuth authentication flow
 
@@ -148,13 +154,15 @@ Creates multiple tasks in a Todoist project
 
 ### Environment Variables for Production
 
+- `GEMINI_API_KEY`: Your Google Gemini API key (server-side only)
 Make sure to set these in your Vercel project:
 - `NEXTAUTH_URL`: Your production URL
-- `NEXTAUTH_SECRET`: A secure random string
-- `TODOIST_CLIENT_ID`: Your Todoist app client ID
-- `TODOIST_CLIENT_SECRET`: Your Todoist app client secret
-
-## Troubleshooting
+- `NText Extraction Not Working
+- Verify your Gemini API key is correct
+- Make sure the image is clear and well-lit
+- Ensure text is visible and readable in the photo
+- Check browser console for API errors
+- Gemini works well with both printed and handwritten text
 
 ### OCR Not Working
 - Make sure the image is clear and well-lit
@@ -169,10 +177,10 @@ Make sure to set these in your Vercel project:
 - Clear browser cookies and try again
 
 ### Tasks Not Creating
-- Verify you're signed in to Todoist
-- Check that you've selected a project
-- Ensure at least one task is selected
-- Check browser console for error messages
+- Vupport for multiple images in one session
+- Due date extraction from text using Gemini
+- Priority and label detection
+- Smart task categorizar error messages
 
 ## Future Enhancements
 

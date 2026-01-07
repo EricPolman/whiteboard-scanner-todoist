@@ -35,6 +35,7 @@ Set these in Vercel project settings → Environment Variables:
 - [ ] `NEXTAUTH_SECRET` = Generate new secret with `openssl rand -base64 32`
 - [ ] `TODOIST_CLIENT_ID` = Your production Todoist client ID
 - [ ] `TODOIST_CLIENT_SECRET` = Your production Todoist client secret
+- [ ] `GEMINI_API_KEY` = Your Google Gemini API key (server-side only)
 
 **Important**: Use different credentials for production than development!
 
@@ -49,7 +50,7 @@ Set these in Vercel project settings → Environment Variables:
 - [ ] Visit production URL
 - [ ] Test Todoist sign-in flow
 - [ ] Upload a test whiteboard image
-- [ ] Verify OCR extraction works
+- [ ] Verify Gemini text extraction works
 - [ ] Create test tasks in Todoist
 - [ ] Verify tasks appear in Todoist
 - [ ] Test on mobile device
@@ -79,7 +80,8 @@ After deployment, monitor:
 
 - [ ] Error logs in Vercel dashboard
 - [ ] User feedback
-- [ ] OCR accuracy
+- [ ] Gemini API usage and costs
+- [ ] Text extraction accuracy
 - [ ] Task creation success rate
 - [ ] Authentication issues
 
@@ -97,6 +99,7 @@ If issues occur:
 
 - [ ] Document any production issues
 - [ ] Keep dependencies updated
+- [ ] Monitor Gemini API changes and pricing
 - [ ] Monitor Todoist API changes
 - [ ] Update documentation as needed
 - [ ] Collect user feedback for improvements
@@ -105,6 +108,6 @@ If issues occur:
 
 - [Vercel Documentation](https://vercel.com/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
-- [NextAuth.js Documentation](https://next-auth.js.org)
+- [Google Gemini API Documentation](https://ai.google.dev/docs
 - [Todoist API Documentation](https://developer.todoist.com/rest/v2)
 - [Tesseract.js Documentation](https://tesseract.projectnaptha.com)
