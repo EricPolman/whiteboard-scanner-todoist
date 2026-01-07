@@ -104,7 +104,7 @@ Leading - or • characters should be removed from the start of each line. A tit
 Fix casing errors.`;
 
     if (sectionNames.length > 0) {
-      prompt += `\n\nThis appears to be a grocery list. Classify each item into the most relevant section from this list:
+      prompt += `\n\nThis appears to be a list with categories. Classify each item into the most relevant section from this list:
 ${sectionNames.map((name) => `- ${name}`).join("\n")}
 
 Return ONLY a JSON array in this format with no additional text:
